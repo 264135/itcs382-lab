@@ -32,7 +32,7 @@ Table 1. SonarQube issues in the starter code
 | 10 | java:S106 | ParcelService.java:67 | Replace this use of System.out by a logger. |
 | 11 | java:S106 | ParcelService.java:69 | Replace this use of System.out by a logger. |
 | 12 | java:S2095 | ParcelService.java:76 | Use try-with-resources or close this "FileWriter" in a "finally" clause. |
-| 13 | java:S108 | ParcelService.java:81 | Remove this block of code, fill it in, or add a comment explaining why it is empty. |
+| 13 | java:S108 | ParcelService.java:80 | Remove this block of code, fill it in, or add a comment explaining why it is empty. |
 
 ## Task 2. AI review of the starter code
 
@@ -50,7 +50,7 @@ Table 2. All findings on the starter code
 | --- | --- | --- | --- | --- | --- |
 | 1 | ParcelService.java:42 | Pickup compares parcel codes with `==`. | both | java:S4973 | yes, because the two codes are different String objects, and the starter run printed Fee: 0.0 and left the parcel STORED |
 | 2 | ParcelService.java:76 | The FileWriter is never closed or flushed. | both | java:S2095 | yes, because saveToFile creates the writer and the starter run left parcels.csv empty |
-| 3 | ParcelService.java:81 | The catch block is empty. | both | java:S108 | yes, because the catch body has no statement |
+| 3 | ParcelService.java:80 | The catch block is empty. | both | java:S108 | yes, because the catch body has no statement |
 | 4 | ParcelService.java:6 | The Date import is unused. | both | java:S1128 | yes, because Date does not appear again in the file |
 | 5 | ParcelService.java:12 | maxParcels is never read. | both | java:S1068 | yes, because the field is only assigned 100 |
 | 6 | Main.java:8 | The Scanner is never closed. | AI | none | yes, because main never closes the Scanner, and SonarQube did not report it |
