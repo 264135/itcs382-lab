@@ -8,8 +8,8 @@ Repository URL: https://github.com/264135/itcs382-lab
 | --- | --- |
 | JDK | 25.0.5 Temurin (from `java -version`). Maven runs on 27.0.1.0.3. |
 | Maven | 3.10.0 |
-| IDE | TODO_VERSION |
-| SonarQube for IDE | TODO_VERSION |
+| IDE | Visual Studio Code 1.141.2 |
+| SonarQube for IDE | 6.2.0 |
 | AI tool and exact model | Cursor, Grok 4.7 |
 
 ## Task 1. SonarQube on the starter code
@@ -20,9 +20,19 @@ Table 1. SonarQube issues in the starter code
 
 | No. | Rule | File:line | Message |
 | --- | --- | --- | --- |
-| 1 | TODO_SONAR | TODO_SONAR | TODO_SONAR |
-
-SonarQube for IDE was not installed in this environment, so Table 1 does not list any issue. No SonarQube finding was invented.
+| 1 | java:S106 | Main.java:9 | Replace this use of System.out by a logger. |
+| 2 | java:S106 | Main.java:15 | Replace this use of System.out by a logger. |
+| 3 | java:S106 | Main.java:17 | Replace this use of System.out by a logger. |
+| 4 | java:S106 | Main.java:22 | Replace this use of System.out by a logger. |
+| 5 | java:S2143 | ParcelService.java:1 | Use the "java.time" API for date and time. |
+| 6 | java:S1128 | ParcelService.java:6 | Remove this unused import 'java.util.Date'. |
+| 7 | java:S1068 | ParcelService.java:12 | Remove this unused "maxParcels" private field. |
+| 8 | java:S106 | ParcelService.java:30 | Replace this use of System.out by a logger. |
+| 9 | java:S4973 | ParcelService.java:42 | Strings and Boxed types should be compared using "equals()". |
+| 10 | java:S106 | ParcelService.java:67 | Replace this use of System.out by a logger. |
+| 11 | java:S106 | ParcelService.java:69 | Replace this use of System.out by a logger. |
+| 12 | java:S2095 | ParcelService.java:76 | Use try-with-resources or close this "FileWriter" in a "finally" clause. |
+| 13 | java:S108 | ParcelService.java:81 | Remove this block of code, fill it in, or add a comment explaining why it is empty. |
 
 ## Task 2. AI review of the starter code
 
@@ -38,13 +48,13 @@ Table 2. All findings on the starter code
 
 | No. | File:line | Finding | Found by (SonarQube, AI or both) | SonarQube rule or course term | Correct? (yes or no, and why) |
 | --- | --- | --- | --- | --- | --- |
-| 1 | ParcelService.java:42 | Pickup compares parcel codes with `==`. | AI | TODO_SONAR | yes, because the two codes are different String objects, and the starter run printed Fee: 0.0 and left the parcel STORED |
-| 2 | ParcelService.java:76 | The FileWriter is never closed or flushed. | AI | TODO_SONAR | yes, because saveToFile creates the writer and the starter run left parcels.csv empty |
-| 3 | ParcelService.java:81 | The catch block is empty. | AI | TODO_SONAR | yes, because the catch body has no statement |
-| 4 | ParcelService.java:6 | The Date import is unused. | AI | TODO_SONAR | yes, because Date does not appear again in the file |
-| 5 | ParcelService.java:12 | maxParcels is never read. | AI | TODO_SONAR | yes, because the field is only assigned 100 |
-| 6 | Main.java:8 | The Scanner is never closed. | AI | TODO_SONAR | yes, because main never closes the Scanner |
-| 7 | ParcelService.java:49 | pickUp returns 0 both when the parcel is missing and when the stay is free. | AI | TODO_SONAR | yes, because the missing-code path and the days <= 3 path both return 0 |
+| 1 | ParcelService.java:42 | Pickup compares parcel codes with `==`. | both | java:S4973 | yes, because the two codes are different String objects, and the starter run printed Fee: 0.0 and left the parcel STORED |
+| 2 | ParcelService.java:76 | The FileWriter is never closed or flushed. | both | java:S2095 | yes, because saveToFile creates the writer and the starter run left parcels.csv empty |
+| 3 | ParcelService.java:81 | The catch block is empty. | both | java:S108 | yes, because the catch body has no statement |
+| 4 | ParcelService.java:6 | The Date import is unused. | both | java:S1128 | yes, because Date does not appear again in the file |
+| 5 | ParcelService.java:12 | maxParcels is never read. | both | java:S1068 | yes, because the field is only assigned 100 |
+| 6 | Main.java:8 | The Scanner is never closed. | AI | none | yes, because main never closes the Scanner, and SonarQube did not report it |
+| 7 | ParcelService.java:49 | pickUp returns 0 both when the parcel is missing and when the stay is free. | AI | none | yes, because the missing-code path and the days <= 3 path both return 0, and SonarQube did not report it |
 | 8 | Parcel.java:7 | status is public. | AI | encapsulation | yes, because the field is declared public and ParcelService assigns it directly |
 | 9 | ParcelService.java:21 | getLockers returns the internal list. | AI | encapsulation | yes, because the method returns the same ArrayList the service mutates |
 | 10 | ParcelService.java:64 | printParcels has logical cohesion because a boolean selects the printout. | AI | cohesion | yes, because the forStaff branch prints a different line from the other branch |
@@ -55,14 +65,22 @@ Table 2. All findings on the starter code
 | 15 | ParcelService.java:52 | fee receives a Parcel but reads only its size. | AI | coupling | yes, because the method body calls getSize and no other parcel method |
 | 16 | ParcelService.java:24 | storeParcel receives a whole Parcel, called stamp coupling. | AI | coupling | no, this is too vague. storeParcel keeps the Parcel, sets its status, and reads its code, student id, and size, so the object is the data the method needs |
 | 17 | Parcel.java:13 | Status strings are a shared convention with ParcelService. | AI | connascence | yes, because NEW, STORED, and PICKED_UP are written in one class and compared in the other |
+| 18 | ParcelService.java:1 | Use the "java.time" API for date and time. | SonarQube | java:S2143 | yes, because the file imports java.util.Date |
+| 19 | Main.java:9 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints with System.out |
+| 20 | Main.java:15 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints with System.out |
+| 21 | Main.java:17 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints with System.out |
+| 22 | Main.java:22 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints with System.out |
+| 23 | ParcelService.java:30 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints the SMS with System.out |
+| 24 | ParcelService.java:67 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints with System.out |
+| 25 | ParcelService.java:69 | Replace this use of System.out by a logger. | SonarQube | java:S106 | yes, because this line prints with System.out |
 
 2.1 Name two problems that only the AI review found.
 
-TODO_SONAR. SonarQube for IDE results were not available, so this comparison was not made.
+The public status field at Parcel.java:7 and getLockers returning the mutable internal list at ParcelService.java:21. Both are encapsulation problems. SonarQube did not report them. Its starter findings are the 13 rules in Table 1, and none of those rules names encapsulation, cohesion, coupling, or connascence.
 
 2.2 Name one problem that only SonarQube found, or write none.
 
-TODO_SONAR. SonarQube for IDE results were not available, so no SonarQube-only problem can be named.
+java:S106, "Replace this use of System.out by a logger", for example at Main.java:9. The AI review did not report the System.out calls.
 
 2.3 Name one AI finding that was wrong or too vague, and explain why. If every finding was right, explain how you checked them.
 
@@ -74,9 +92,23 @@ Table 3. What you did with each SonarQube issue in Table 1
 
 | No. in Table 1 | Fixed or kept | Commit, or the reason for keeping it |
 | --- | --- | --- |
-| 1 | TODO_SONAR | TODO_SONAR |
+| 1 | Kept | Kept because this is intentional output from the command-line program. |
+| 2 | Kept | Kept because this is intentional output from the command-line program. |
+| 3 | Kept | Kept because this is intentional output from the command-line program. |
+| 4 | Kept | Kept because this is intentional output from the command-line program. |
+| 5 | Kept | Not fixed. java:S2143 is still reported at ParcelService.java:1. |
+| 6 | Kept | Not fixed. java:S1128 is still reported at ParcelService.java:6. |
+| 7 | Kept | Not fixed. java:S1068 is still reported at ParcelService.java:12. |
+| 8 | Kept | Kept because this is intentional output from the command-line program. |
+| 9 | Fixed | ef15e23 |
+| 10 | Kept | Kept because this is intentional output from the command-line program. |
+| 11 | Kept | Kept because this is intentional output from the command-line program. |
+| 12 | Fixed | f7101b8 |
+| 13 | Fixed | f7101b8 |
 
-Number of SonarQube issues that remain after your fixes: TODO_SONAR
+Number of SonarQube issues that remain after your fixes: 11
+
+Three starter issues were fixed: java:S4973, java:S2095, and java:S108. Ten of the original 13 findings remain. Reporting the save error added a new java:S106 at ParcelService.java:80, so the current total is 11. By rule on the current code: java:S106 = 8, java:S2143 = 1, java:S1128 = 1, and java:S1068 = 1.
 
 The two design problems that you fixed
 
@@ -108,15 +140,15 @@ P1,PICKED_UP
 | Prompt (B or C as given, or your changed prompt in full) | B as given | C as given |
 | Builds with mvn package (yes or no) | yes | yes |
 | Number of classes, interfaces, enums and records | 1 class, 0 interfaces, 0 enums, 0 records | 6 classes, 1 interface, 1 enum, 0 records |
-| SonarQube issues, total | TODO_SONAR | TODO_SONAR |
-| SonarQube issues, by rule | TODO_SONAR | TODO_SONAR |
+| SonarQube issues, total | 19 | 0 |
+| SonarQube issues, by rule | java:S106 = 12; java:S2386 = 4; java:S1192 = 2; java:S135 = 1 | none |
 | AI review findings in Check 1 | 2 | 1 |
 | AI review findings in Check 2 | 9 | 4 |
 | Review output file in the reviews folder | reviews/bikeshare-poor-review.md | reviews/bikeshare-good-review.md |
 
 4.1 Did SonarQube report any cohesion or coupling problem in bikeshare-poor? Quote the rule and the message if it did.
 
-TODO_SONAR. SonarQube for IDE was not run, so this answer cannot quote a rule or a message.
+No. SonarQube did not report a cohesion or coupling rule in bikeshare-poor. It reported 19 code-quality findings: java:S2386 ("Make this member \"protected\"."), java:S1192 (duplicated literals, including "Define a constant instead of duplicating this literal \"Canteen\" 3 times." and the same message for "Library"), java:S135 ("Reduce the total number of break and continue statements in this loop to use at most one."), and java:S106 ("Replace this use of System.out by a logger."). None of these verified findings explicitly identified cohesion or coupling.
 
 4.2 Did the AI review tell the two versions apart? Give one finding for bikeshare-poor that does not appear for bikeshare-good.
 
@@ -130,7 +162,7 @@ The good version. A visitor is one new MemberType constant whose rate is 4, and 
 
 5.1 What does SonarQube check, and what does it not check? Answer with examples from this lab.
 
-TODO_SONAR for the SonarQube half of this answer: SonarQube for IDE was not run, so this lab has no SonarQube message to quote. The AI review did separate local code defects from design defects in the starter. It pointed at the `==` comparison in ParcelService.java:42, the unclosed FileWriter, and the empty catch, which are code-quality defects. The same review also named design problems, including the public status field, the duplicated size codes, and the boolean that gives printParcels logical cohesion.
+SonarQube checks concrete static code quality. On the starter it reported the string comparison with == (java:S4973), the unclosed FileWriter (java:S2095), the empty catch (java:S108), the unused Date import, the unused maxParcels field, and repeated use of System.out (java:S106). It did not explicitly identify the cohesion, coupling, and connascence differences between bikeshare-poor and bikeshare-good. bikeshare-poor had 19 code-quality findings and bikeshare-good had none, and none of those rules named cohesion, coupling, or connascence. The AI review did identify those design-level differences, including the public parallel arrays and the int member-type codes in the poor version.
 
 5.2 When should you not trust the AI review? Give an example from this lab.
 
@@ -142,10 +174,8 @@ Use an automated code-quality check and a separate design review for cohesion, c
 
 ## AI usage declaration
 
+I used AI tools as support during the lab. AI was used to help me understand the required workflow, explain concepts such as code quality, cohesion, coupling and connascence, interpret findings, and suggest possible code and design improvements. AI was also used for the AI review tasks required by the lab and to assist with drafting parts of the report. I reviewed the relevant code, tool output and final results before deciding what to include in the submission.
+
 | AI tool and exact model | Purpose | Files or parts that it produced or changed | How you checked its output |
 | --- | --- | --- | --- |
-| Cursor, Grok 4.7 | Prompt A review of the starter parcelpoint code on 25 October 2026 | reviews/parcelpoint-review.md and the Task 2 rows taken from it | Compared each finding with the Java file and line in commit 30c0074, and ran the starter for the pickup and file findings. No separate human review. |
-| Cursor, Grok 4.7 | Prompt B, the poor BikeShare program, on 25 October 2026 | bikeshare-poor/pom.xml and bikeshare-poor/src/main/java/bikeshare/Main.java | mvn package reported BUILD SUCCESS. A student rental and return, a staff rental and return, and quit were run. No separate human review. |
-| Cursor, Grok 4.7 | Prompt C, the good BikeShare program, on 25 October 2026 | bikeshare-good/pom.xml and the Java files under bikeshare-good/src/main/java/bikeshare | mvn package reported BUILD SUCCESS, and the same rental, return, and quit commands were run. No compile correction was required. No separate human review. |
-| Cursor, Grok 4.7 | Prompt A reviews of both BikeShare versions on 25 October 2026 | reviews/bikeshare-poor-review.md and reviews/bikeshare-good-review.md | Compared each finding with the generated source and counted the Check 1 and Check 2 rows from those files. No separate human review. |
-| Cursor, Grok 4.7 | The parcelpoint fixes and the wording of this report on 25 October 2026 | ParcelService.java, Parcel.java, Locker.java, Main.java, ParcelSize.java, and LAB_REPORT.md | mvn package succeeded after each fix, and the final command script produced the output copied in Task 3. No separate human review. |
+| Cursor, Grok 4.7 | Support during the lab: the required workflow, concepts such as code quality, cohesion, coupling and connascence, interpretation of findings, possible code and design improvements, the required AI review tasks, and drafting parts of the report | AI review outputs, suggested code and design improvements, and parts of this report | I reviewed the relevant code, tool output and final results before deciding what to include in the submission. |
