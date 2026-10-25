@@ -12,9 +12,9 @@ public class ParcelService {
     private int maxParcels = 100;
 
     public ParcelService() {
-        lockers.add(new Locker(1, 1));
-        lockers.add(new Locker(2, 2));
-        lockers.add(new Locker(3, 3));
+        lockers.add(new Locker(1, ParcelSize.SMALL));
+        lockers.add(new Locker(2, ParcelSize.MEDIUM));
+        lockers.add(new Locker(3, ParcelSize.LARGE));
     }
 
     public List<Locker> getLockers() {
@@ -23,7 +23,7 @@ public class ParcelService {
 
     public Locker storeParcel(Parcel parcel) {
         for (Locker locker : lockers) {
-            if (locker.isFree() && locker.getSize() >= parcel.getSize()) {
+            if (locker.isFree() && locker.getSize().getCode() >= parcel.getSize().getCode()) {
                 locker.setParcel(parcel);
                 parcel.setStatus("STORED");
                 parcels.add(parcel);
@@ -53,9 +53,9 @@ public class ParcelService {
         if (days <= 3) {
             return 0;
         }
-        if (parcel.getSize() == 1) {
+        if (parcel.getSize() == ParcelSize.SMALL) {
             return (days - 3) * 10.0;
-        } else if (parcel.getSize() == 2) {
+        } else if (parcel.getSize() == ParcelSize.MEDIUM) {
             return (days - 3) * 15.0;
         }
         return (days - 3) * 20.0;
